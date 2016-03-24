@@ -6,10 +6,12 @@
 #
 # Commands:
 #  hubot ancur {query} - responds with card info from ANCUR and shows a url
-#  hubot nrdb {card_attribute} {query} - responds with card info from netrunner db
-#  hubot nrdb {card_attribute} {query} -l - responds with list of first 10 matches
-#  hubot nrdb {card_attribute} {query} -n - responds with only card image, no text
-#  hubot nrdbq {query | attribute:query [ [OR|AND] attribute2:query2] }
+#  hubot nrdb {card_name} - responds with card info from netrunner db
+#  hubot nrdb {card_name} -l - responds with list of first 10 matches
+#  hubot nrdb {card_name} -n - responds with only card image, no text
+#  hubot nrdbq {card_attribute} {query} - responds with card info from netrunner db
+#  hubot nrdbq {card_attribute} {query} -l - responds with list of first 10 matches
+#  hubot nrdbq {card_attribute} {query} -n - responds with only card image, no text
 #
 # Author:
 #  omardelarosa
@@ -138,8 +140,8 @@ nrdb = (msg) ->
   else
     noText = false
   opts = { noText: noText, listTen: listTen }
-  key = matchData[2]
-  query = matchData.slice(3).join(' ')
+  key = 'title'
+  query = matchData.slice(2).join(' ')
   url = 'http://netrunnerdb.com/api/cards/'
   msg.http(url)
     .get() (err, res, body) ->
@@ -170,19 +172,50 @@ nrdb = (msg) ->
           msg.send "Error parsing response from NetRunner DB"
 
 nrdbq = (msg) ->
-  q = msg.match[1]
-  url = "http://netrunner.delarosa.io/search/"
-  concatUrl = "#{url}#{q}"
-  msg.http(concatUrl)
+  matchData = msg.match[0].split(' ')
+  indexOfListFlag = matchData.indexOf('-l')
+  indexOfNoTextFlag = matchData.indexOf('-n')
+  if indexOfListFlag != -1
+    listTen = true
+    matchData.splice(indexOfListFlag, 1)
+  else
+    listTen = false
+  if indexOfNoTextFlag != -1
+    noText = true
+    matchData.splice(indexOfNoTextFlag, 1)
+  else
+    noText = false
+  opts = { noText: noText, listTen: listTen }
+  key = matchData[2]
+  query = matchData.slice(3).join(' ')
+  url = 'http://netrunnerdb.com/api/cards/'
+  msg.http(url)
     .get() (err, res, body) ->
       if err
-        console.log err
-      content = JSON.parse body
-      if content.length == 0
-        msg.send "No matches found for #{q}"
+        # console.log err
+        msg.send "Error fetching card data."
+        return
       else
-        content.forEach (c) ->
-          formatNRDBResponse(msg, c, {})
+        try
+          cardList = JSON.parse(body)
+          lowerCaseQuery = query.toLowerCase()
+          results = _.filter cardList, (card) ->
+            if card[key] and card[key].toLowerCase().search(lowerCaseQuery) != -1
+              return true
+            else
+              return false
+          if results.length > 0
+            if opts.listTen
+              results.slice(0, 10).forEach (card) ->
+                formatNRDBResponse msg, card, opts
+            else
+              formatNRDBResponse msg, results[0], opts
+          else
+            msg.send 'No results matched your query "' + key + ': ' + query + '"'
+        catch e
+          console.log e
+          console.log e.stack
+          msg.send "Error parsing response from NetRunner DB"
 
 
 fetchCard = (msg) ->
@@ -216,5 +249,5 @@ module.exports = (robot) ->
   robot.respond /nrdb (.*)\b/i, (msg) ->
     nrdb(msg)
 
-  robot.respond /nrdbq (.*)/i, (msg) ->
+  robot.respond /nrdbq (.*)\b/i, (msg) ->
     nrdbq(msg)
