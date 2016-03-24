@@ -1,42 +1,46 @@
-# Hubot: hubot-netrunner
+# Hubot: hubot-nrdb
 
 A hubot script for retrieving netrunner card information
 
 ## Installation
 
-Add **hubot-netrunner** to your `package.json` file:
+Add **hubot-nrdb** to your `package.json` file:
 
 ```json
 "dependencies": {
   "hubot": ">= 2.5.1",
   "hubot-scripts": ">= 2.4.2",
-  "hubot-netrunner": ">= 0.0.0"
+  "hubot-nrdb": ">= 0.0.0"
 }
 ```
 
-Add **hubot-netrunner** to your `external-scripts.json`:
+Add **hubot-nrdb** to your `external-scripts.json`:
 
 ```json
-["hubot-netrunner"]
+["hubot-nrdb"]
 ```
 
-Run `npm install hubot-netrunner`
+Run `npm install hubot-nrdb`
 
-Add **hubot-netrunner** to your `external-scripts.json`:
+Add **hubot-nrdb** to your `external-scripts.json`:
 
 ```json
-["hubot-netrunner"]
+["hubot-nrdb"]
 ```
 
 ## Sample Interaction
 
 ```
-user1>> hubot netrunner stimhack
-hubot>> Stimhack
-  Stimhack initiates a run on any server and gives the Runner 9. It also has the following effect:
+user1>> hubot nrdb stimhack
+hubot>>
+Title*​: Stimhack
+​*Faction*​: :anarch:
+​*Type*​: Event  - Run
+​*Cost*​: 0
+​*Influence*​: 1
+​*Set*​: Core Set
+​*Text*​: Make a run, and gain 9:credits:, which you may use only during this run. After the run is completed, suffer 1 brain damage (cannot be prevented) and return to the bank any of the 9:credits: not spent.
+​*NRDBURL*​: http://netrunnerdb.com/en/card/01004
 
-External Links
-  This card is the namesake for the fan website Stimhack.com .
-
-http://ancur.wikia.com/wiki/Stimhack
+http://netrunnerdb.com/bundles/netrunnerdbcards/images/cards/en/01004.png
 ```

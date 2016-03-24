@@ -1,8 +1,17 @@
 {
-  "name": "hubot-netrunner",
-  "description": "A hubot script to show Android Netrunner card info",
-  "version": "0.0.12",
-  "author": "Omar Delarosa <thedelarosa@gmail.com>",
+  "name": "hubot-nrdb",
+  "description": "Fork of hubot-netrunner with easier NRDB search",
+  "version": "0.1.1",
+  "contributors": [
+    {
+      "name": "Omar Delarosa",
+      "email": "thedelarosa@gmail.com"
+    },
+    {
+      "name": "Ivan Ferrari",
+      "email": "hideaki02@gmail.com"
+    }
+  ],
   "license": "MIT",
   "keywords": [
     "hubot",

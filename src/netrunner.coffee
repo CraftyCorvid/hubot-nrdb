@@ -5,7 +5,7 @@
 #  None
 #
 # Commands:
-#  hubot netrunner {query} - responds with card info from wikia and shows a url
+#  hubot ancur {query} - responds with card info from ANCUR and shows a url
 #  hubot nrdb {card_attribute} {query} - responds with card info from netrunner db
 #  hubot nrdb {card_attribute} {query} -l - responds with list of first 10 matches
 #  hubot nrdb {card_attribute} {query} -n - responds with only card image, no text
@@ -210,7 +210,7 @@ fetchCard = (msg) ->
         msg.send "Nothing found for: '"+msg.match[0]+"'"
 
 module.exports = (robot) ->
-  robot.respond /netrunner (.*)\b/i, (msg) ->
+  robot.respond /ancur (.*)\b/i, (msg) ->
     fetchCard(msg)
  
   robot.respond /nrdb (.*)\b/i, (msg) ->
