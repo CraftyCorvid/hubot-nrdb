@@ -1,7 +1,7 @@
 {
   "name": "hubot-nrdb",
   "description": "Fork of hubot-netrunner with easier NRDB search",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "contributors": [
     {
       "name": "Omar Delarosa",
